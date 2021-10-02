@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:mars/screens/apod_screen.dart';
+import 'package:mars/screens/live_data_screen.dart';
 import 'package:mars/screens/mars_surface_images.dart';
 
 class NavigationDrawerWidget extends StatelessWidget {
@@ -16,27 +17,33 @@ class NavigationDrawerWidget extends StatelessWidget {
             SizedBox(height: 70.0,),
             Divider(color: Colors.white,),
             DrawerCard(
-              text: 'Mars Surface Images',
+              text: 'Home',
               icon: Icons.ballot,
               onClicked: () => selectedItem(context, 0),
             ),
             Divider(color: Colors.white,),
             DrawerCard(
               text: 'NASA APOD',
-              icon: Icons.article,
+              icon: Icons.ballot,
               onClicked: () => selectedItem(context, 1),
+            ),
+            Divider(color: Colors.white,),
+            DrawerCard(
+              text: 'Mars Surface Images',
+              icon: Icons.article,
+              onClicked: () => selectedItem(context, 2),
             ),
             Divider(color: Colors.white,),
             DrawerCard(
               text: 'Developer Notes',
               icon: Icons.developer_mode,
-              onClicked: () => selectedItem(context, 2),
+              onClicked: () => selectedItem(context, 3),
             ),
             Divider(color: Colors.white,),
             DrawerCard(
               text: 'Account',
               icon: Icons.person,
-              onClicked: () => selectedItem(context, 3),
+              onClicked: () => selectedItem(context, 4),
             ),
             Divider(color: Colors.white,),
           ],
@@ -49,8 +56,8 @@ class NavigationDrawerWidget extends StatelessWidget {
 selectedItem(BuildContext context, int index) {
   switch (index) {
     case 0:
-      Navigator.of(context).push(MaterialPageRoute(
-        builder: (context) => MarsSurfaceImages(),
+      Navigator.of(context).pushReplacement(MaterialPageRoute(
+        builder: (context) => HomePage(),
       ));
     break;
     case 1:
@@ -59,9 +66,9 @@ selectedItem(BuildContext context, int index) {
       ));
     break;
     case 2:
-      // Navigator.of(context).push(MaterialPageRoute(
-      //   builder: (context) => DeveloperScreen(),
-      // ));
+      Navigator.of(context).push(MaterialPageRoute(
+        builder: (context) => MarsSurfaceImages(),
+      ));
     break;
     case 3:
       // Navigator.of(context).push(MaterialPageRoute(

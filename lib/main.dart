@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:mars/navigation_drawer_widget.dart';
+import 'package:mars/screens/live_data_screen.dart';
 
 void main() {
   runApp(const MyApp());
@@ -11,11 +12,12 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flutter Demo',
+      title: 'MARS',
       theme: ThemeData(
         primarySwatch: Colors.indigo,
       ),
-      home: const MyHomePage(title: 'Flutter Demo Home Page'),
+      // home: const MyHomePage(title: 'Flutter Demo Home Page'),
+      home: HomePage(),
     );
   }
 }
@@ -66,3 +68,5 @@ class _MyHomePageState extends State<MyHomePage> {
     );
   }
 }
+
+

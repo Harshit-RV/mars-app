@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
-// import 'package:http/http.dart';
+import 'package:mars/components/heading_widget.dart';
 import 'dart:convert';
 import 'package:mars/constants.dart';
-import 'package:flutter_spinkit/flutter_spinkit.dart';
 
 class APODscreen extends StatefulWidget {
   const APODscreen({ Key? key }) : super(key: key);
@@ -22,6 +21,11 @@ class _APODscreenState extends State<APODscreen> {
   late String month;
   late String day;
 
+  bool isLoading = true;
+  bool imageLoaded = false;
+
+  final double padding = 12;
+
   Future<http.Response> getApodResponse() {
     // {String year, String month, String day}
     // String date = '$year-$month-$day';
@@ -37,6 +41,7 @@ class _APODscreenState extends State<APODscreen> {
     setState(() {
       imageInfo = apodDetails['explanation'] ?? 'data is not available';
       imageTitle = apodDetails['title'] ?? 'data is not available';
+      isLoading = false;
     });
 
     mediaType = apodDetails['media_type'];
@@ -54,48 +59,87 @@ class _APODscreenState extends State<APODscreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('NASA APOD')
+        title: const Text('NASA APOD')
       ),
-      // body: Container(
-      //   child: imageTitle != 'data is not available' ? 
-      //   APODview()
-      //   :
-      //   Center(child: Text('Something went wrong. Make sure you are connected to the internet.'),),
-      // )
       body: Center(
-        child: SpinKitDoubleBounce(
-          color: Colors.indigo,
-          size: 100.0,
-
-        )
+        child: isLoading
+          ?
+          const CircularProgressIndicator()
+          :
+          APODview(),
       ),
     );
   }
 
-  Container APODview() {
-    return Container(
-      child: Padding(
-        padding: const EdgeInsets.all(20.0),
-        child: ListView(
-          children: [
-            Text(
-              imageTitle,
-              style: TextStyle(
-                fontWeight: FontWeight.bold,
-              ),
+  // ignore: non_constant_identifier_names
+  ListView APODview() {
+    return ListView(
+      children: [
+        HeadingWidget(heading: 'Astronomical Picture of the Day'),
+        Padding(
+          padding: EdgeInsets.all(padding),
+          child: Text(
+            '  $imageTitle  ',
+            textAlign: TextAlign.center,
+            style: const TextStyle(
+              fontWeight: FontWeight.w900,
+              fontSize: 24,
+              decoration: TextDecoration.underline,
             ),
-            Container(
-              child: imageUrl != null ? Image.network(imageUrl.toString()) : mediaType == 'video' ? Text('Image is not available'): Text('Waiting for the image to load'),
-            ),
-            Text(
-              imageInfo,
-              style: TextStyle(
-                fontStyle: FontStyle.italic,
-              ),
-            )
-          ],
+          ),
         ),
-      ),
+        Padding(
+          padding: EdgeInsets.all(padding),
+          child: Container(
+            child: imageUrl != null ? 
+              Image.network(
+                imageUrl.toString(),
+                loadingBuilder: (BuildContext context, Widget child, ImageChunkEvent? loadingProgress) {
+                  if (loadingProgress == null) {
+                    return child;
+                  }
+                  return Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 30),
+                    child: Column(
+                      children: [
+                        Text(
+                          'image is loading...',
+                          style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                          )
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.all(15),
+                          child: LinearProgressIndicator(
+                            value: loadingProgress.expectedTotalBytes != null ?
+                            loadingProgress.cumulativeBytesLoaded / loadingProgress.expectedTotalBytes! :
+                            null,
+                          ),
+                        ),
+                      ]
+                    )
+                  );
+                }
+              ) 
+              : 
+              mediaType == 'video' ? 
+                const Text('Image is not available')
+                : 
+                const Text('Waiting for the image to load'),
+            )
+        ),
+        Padding(
+          padding: EdgeInsets.symmetric(vertical: padding, horizontal: 16),
+          child: Text(
+            imageInfo,
+            style: const TextStyle(
+              fontStyle: FontStyle.italic,
+              fontSize: 15,
+              fontWeight: FontWeight.w700,
+            ),
+          ),
+        )
+      ],
     );
   }
 }
