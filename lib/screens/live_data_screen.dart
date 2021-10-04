@@ -3,6 +3,9 @@ import 'package:mars/components/heading_widget.dart';
 import 'package:mars/components/single_value_card.dart';
 import 'package:mars/navigation_drawer_widget.dart';
 import 'package:carousel_slider/carousel_slider.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
+import 'package:mars/constants.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({ Key? key }) : super(key: key);
@@ -14,13 +17,38 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
 
   final List imageList = [
-    // 'assets/images/mars.jpg',
-    // 'assets/images/rocks.jpg',
+    'assets/images/mars.jpg',
+    'assets/images/rocks.jpg',
     'assets/images/surface.jpg',
     'assets/images/surface2.jpg',
     'assets/images/perseverance_selfie.jpg',
     'assets/images/perseverance_surface.jpg',
+    'assets/images/helicopter.jpg',
   ];
+
+  Future<http.Response> getInsightResponse() {
+
+    Future<http.Response> response = http.get(Uri.parse(insight));
+
+    return response;
+  }
+
+  displayInsight(http.Response response) {
+    Map<String, dynamic> insightData = json.decode(response.body);
+
+    print(insightData);
+
+    // setState(() {
+      
+    // });
+  }
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    getInsightResponse().then((response) => displayInsight(response)).catchError((error) => print(error));
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -32,32 +60,31 @@ class _HomePageState extends State<HomePage> {
       ),
       body: ListView(
         children: [
+          SizedBox(
+            height: 10,
+          ),
           Padding(
             padding: EdgeInsets.only(top:8, left: 8, right: 8),
-            child: Container(
-              height:200,
-              width: double.infinity,
-              color: Colors.black87,
-              child: CarouselSlider(
-                options: CarouselOptions(
-                  enableInfiniteScroll: true,
-                  autoPlay: false,
-                ),
-                items: imageList.map((e) => ClipRRect(
-                  borderRadius : BorderRadius.circular(8),
-                  child: Stack(
-                    fit: StackFit.expand,
-                    children: [
-                      Image.asset(
-                        e,
-                        width: 1050,
-                        height: 350,
-                        fit: BoxFit.cover,
-                      )
-                    ]
-                  )
-                )).toList(),
+            child: CarouselSlider(
+              options: CarouselOptions(
+                enlargeCenterPage: true,
+                enableInfiniteScroll: true,
+                autoPlay: false,
               ),
+              items: imageList.map((e) => ClipRRect(
+                borderRadius : BorderRadius.circular(8),
+                child: Stack(
+                  fit: StackFit.expand,
+                  children: [
+                    Image.asset(
+                      e,
+                      width: 1050,
+                      height: 350,
+                      fit: BoxFit.cover,
+                    )
+                  ]
+                )
+              )).toList(),
             ),
           ),
           HeadingWidget(heading: 'Latest Data from MARS'),

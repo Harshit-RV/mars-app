@@ -1,9 +1,14 @@
 import 'package:flutter/material.dart';
-import 'package:http/http.dart' as http;
-import 'dart:convert';
+import 'package:mars/components/heading_widget.dart';
+import 'package:mars/components/select_rover_card.dart';
+import 'package:mars/datepicker.dart';
+import 'package:mars/screens/curiosity_images_screen.dart';
+import 'package:mars/screens/opportunity_images_screen.dart';
+import 'package:mars/screens/perseverance_images_screen.dart';
+import 'package:mars/screens/spirit_images_screen.dart';
 
 class MarsSurfaceImages extends StatefulWidget {
-  const MarsSurfaceImages({ Key? key }) : super(key: key);
+  const MarsSurfaceImages({Key? key}) : super(key: key);
 
   @override
   _MarsSurfaceImagesState createState() => _MarsSurfaceImagesState();
@@ -13,215 +18,63 @@ class _MarsSurfaceImagesState extends State<MarsSurfaceImages> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text('Mars\' Surface Images'),
-      ),
-      body: Padding(
-        padding: const EdgeInsets.all(8.0),
-        child: CompareCard(
-          topic: 'Weather (*C)',
-          col1: 'high',
-          data1: '-21*',
-          col2: 'low',
-          data2: '-72*',
+        appBar: AppBar(
+          title: const Text('Mars\' Surface Images'),
         ),
-      ),
-    );
-  }
-}
-
-class CompareCard extends StatelessWidget {
-  const CompareCard({
-    Key? key,
-    required this.topic,
-    required this.col1,
-    required this.col2,
-    required this.data1,
-    required this.data2,
-  }) : super(key: key);
-
-  final String topic;
-  final String col1;
-  final String col2;
-  final String data1;
-  final String data2;
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-        height: 140,
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(8.0),
-          color: Colors.white,
-          boxShadow: [
-            BoxShadow(
-              color: Colors.black.withOpacity(0.4),
-              blurRadius: 4,
-              spreadRadius: 3,
-              offset: const Offset(0, 2),
-            ),
-          ]),
-        // width: 300,
-        // color: Colors.green,
-        child: Column(
-          children: [
-            Expanded(
-              flex: 2,
-              child: Container(
-                decoration: const BoxDecoration(
-                  borderRadius: BorderRadius.only(topLeft: Radius.circular(8.0), topRight: Radius.circular(8.0) ),
-                  color: Colors.indigo,
-                ),
-                child: Center(
-                  child: Text(
-                    topic,
-                    style: const TextStyle(
-                      color: Colors.white,
-                      fontWeight: FontWeight.bold,
-                      fontSize: 17,
-                    ),
-                  ),
+        body: ListView(
+          children: const [
+            HeadingWidget(heading: 'Images Taken By Rovers'),
+            Padding(
+              padding: EdgeInsets.symmetric(vertical: 8.0, horizontal: 20),
+              child: Text(
+                'Select a rover',
+                // textAlign: TextAlign.center,
+                style: TextStyle(
+                  fontWeight: FontWeight.w900,
+                  fontSize: 24,
+                  decoration: TextDecoration.underline,
                 ),
               ),
             ),
-            Expanded(
-              flex: 4,
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [
-                  Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Text(
-                        data1,
-                        style: TextStyle(
-                          fontWeight: FontWeight.w900,
-                          fontSize: 23,
-                          // fontFamily: 
-                        ),
-                      ),
-                      Text(col1),
-                    ]
-                  ),
-                  Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Text(data2),
-                      Text(col2),
-                    ]
-                  ),
-                ],
+            Padding(
+              padding: EdgeInsets.all(12),
+              child: SelectRoverCard(
+                rover: 'Perseverance',
+                landingDate: '18 February 2021',
+                nextScreen: PerseveranceImageScreen(),
               ),
             ),
+            Padding(
+              padding: EdgeInsets.all(12),
+              child: SelectRoverCard(
+                rover: 'Curiosity',
+                landingDate: '6 August 2012',
+                nextScreen: CuriosityImageScreen(),
+              ),
+            ),
+            Padding(
+              padding: EdgeInsets.all(12),
+              child: SelectRoverCard(
+                rover: 'Opportunity',
+                landingDate: '25 January 2004',
+                nextScreen: OpportunityImageScreen(),
+              ),
+            ),
+            Padding(
+              padding: EdgeInsets.all(12),
+              child: SelectRoverCard(
+                rover: 'Spirit',
+                landingDate: '4 January 2004',
+                nextScreen: SpiritImageScreen(),
+              ),
+            ),
+            SizedBox(
+              height: 20,
+            )
           ],
-        ),
+        )
       );
   }
 }
 
-class AttendanceCard extends StatelessWidget {
-  const AttendanceCard({
-    Key? key,
-  }) : super(key: key);
 
-  @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.all(15),
-      child: Container(
-        decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(8.0),
-            color: Colors.blue,
-            boxShadow: [
-              BoxShadow(
-                color: Colors.black.withOpacity(0.4),
-                blurRadius: 4,
-                spreadRadius: 3,
-                offset: Offset(0, 2),
-              ),
-            ]),
-        height: 110,
-        child: Padding(
-          padding: const EdgeInsets.all(15.0),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Expanded(
-                child: SizedBox()
-              ),
-              Expanded(
-                flex: 35,
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Expanded(
-                      flex: 6,
-                      child: Material(
-                        elevation: 20,
-                        borderRadius: BorderRadius.circular(8),
-                        child: Container(
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(8.0),
-                            color: Colors.red,
-                          ),
-                          width: double.maxFinite,
-                          child: Padding(
-                            padding: const EdgeInsets.symmetric(
-                                horizontal: 15, vertical: 8),
-                            child: Text(
-                              'subject',
-                              style: TextStyle(
-                                fontSize: 27,
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                          ),
-                        ),
-                      ),
-                    ),
-                    Expanded(child: SizedBox()),
-                    Expanded(
-                      flex: 3,
-                      child: Container(
-                        width: double.maxFinite,
-                        // color: kTertiaryColor,
-                        child: Text(
-                          '   Attended ',
-                          style: TextStyle(
-                            color: Colors.red,
-                            shadows: [
-                              BoxShadow(
-                                color: Colors.black.withOpacity(0.4),
-                                blurRadius: 4,
-                                spreadRadius: 3,
-                                offset: Offset(0, 2),
-                              ),
-                            ]
-                          ),
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-              Expanded(
-                flex: 35,
-                child: Row(
-                  children: [
-                    Expanded(child: SizedBox()),
-                    Container(
-                      child: CircleAvatar(
-                        radius: 30,
-                        backgroundColor: Colors.red,
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            ],
-          ),
-        ),
-      ),
-    );
-  }
-}
