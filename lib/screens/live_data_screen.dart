@@ -6,6 +6,7 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:mars/constants.dart';
+import 'package:mars/screens/developer_screen.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({ Key? key }) : super(key: key);
@@ -57,6 +58,15 @@ class _HomePageState extends State<HomePage> {
       appBar: AppBar(
         title: Text('MARS'),
         centerTitle: true,
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.developer_mode_rounded),
+            onPressed: () {
+              Navigator.of(context).push(
+                  MaterialPageRoute(builder: (context) => DeveloperScreen()));
+            },
+          ),
+        ],
       ),
       body: ListView(
         children: [
