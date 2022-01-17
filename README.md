@@ -1,16 +1,15 @@
-# mars
+# MARS
 
-A new Flutter project.
+The idea is to provide the already freely available unorganised data (regarding Mars) in an
+organised, simple, user-friendly and understandable format.
 
-## Getting Started
+MARS: Everything We Know app is your one-stop for knowledge about the red planet. You can check the latest weather data recorded at 3 different locations on Mars by differentlanding rovers. You can see the latest surface images clicked by different Mars rovers sent by NASA. You can listen to the latest audios from Mars. You can see how Mars compares to Earth on factors such as temperature, pressure, gravity, atmosphere, etc. There’s a special section in the app called “An Astronaut’s Guide to living on Mars” which lists down random and interesting facts about Mars.
 
-This project is a starting point for a Flutter application.
+## Features in Development:
 
-A few resources to get you started if this is your first Flutter project:
+- Information about past missions and their conclusions
+- Querying and searching images and audios from Mars
+- Information about different Mars rovers
+- Future missions planned for Mars
+- And many more… (open to suggestions)
 
-- [Lab: Write your first Flutter app](https://flutter.dev/docs/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://flutter.dev/docs/cookbook)
-
-For help getting started with Flutter, view our
-[online documentation](https://flutter.dev/docs), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
